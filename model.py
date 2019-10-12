@@ -44,7 +44,7 @@ class SeqToSeqModel:
 
 		# Set the initial state of the decoder to be the ouput state of the encoder.
 		# This is the fundamental part of the encoder-decoder.
-		self.decoder_outputs_and_states = self.decoder(dself.ecoder_inputs, initial_state=self.encoder_states)
+		self.decoder_outputs_and_states = self.decoder(self.ecoder_inputs, initial_state=self.encoder_states)
 
 		# Only select the output of the decoder (not the states)
 		self.decoder_outputs = self.decoder_outputs_and_states[0]
