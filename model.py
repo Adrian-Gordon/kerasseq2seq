@@ -34,7 +34,7 @@ class SeqToSeqModel:
 		self.decoder_inputs = keras.layers.Input(shape=(None, 1))
 
 		self.decoder_cells = []
-		for hidden_neurons in self.layers:
+		for hidden_neurons in self.config["layers"]:
 		    self.decoder_cells.append(keras.layers.GRUCell(hidden_neurons,
 		                                              kernel_regularizer=self.config["kernel_regulariser"],
 		                                              recurrent_regularizer=self.config["recurrent_regulariser"],
