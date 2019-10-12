@@ -62,4 +62,4 @@ class SeqToSeqModel:
 		# The functional API is great, it gives an amazing amount of freedom in architecture of your NN.
 		# A read worth your time: https://keras.io/getting-started/functional-api-guide/ 
 		self.model = keras.models.Model(inputs=[self.encoder_inputs, self.decoder_inputs], outputs=self.decoder_outputs)
-		model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
+		self.model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
