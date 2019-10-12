@@ -64,8 +64,12 @@ class SeqToSeqModel:
 		self.model = keras.models.Model(inputs=[self.encoder_inputs, self.decoder_inputs], outputs=self.decoder_outputs)
 		self.model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
 
-	def train (self):
+	def train(self):
 		self.model.fit_generator(self.config["train_data_generator"], steps_per_epoch=self.config["steps_per_epoch"], epochs=self.config["epochs"])
+
+	def predict(self, x_encoder, x_decoder):
+
+		return self.model.predict([x_encoder, x_decoder])
 
 
 
