@@ -63,3 +63,9 @@ class SeqToSeqModel:
 		# A read worth your time: https://keras.io/getting-started/functional-api-guide/ 
 		self.model = keras.models.Model(inputs=[self.encoder_inputs, self.decoder_inputs], outputs=self.decoder_outputs)
 		self.model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
+
+	def train (self):
+		self.model.fit_generator(self.config["train_data_generator"], steps_per_epoch=self.config["steps_per_epoch"], epochs=self.config["epochs"])
+
+
+
