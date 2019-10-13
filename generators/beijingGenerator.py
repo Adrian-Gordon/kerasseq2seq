@@ -57,7 +57,7 @@ class BeijingGenerator:
                 output_batches.append(output_data)
 
                 start_index += (input_sequence_length + target_sequence_length)
-                decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
+            decoder_input_batches = np.zeros((batch_size, target_sequence_length, 11))
             yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
 
     def generateTestSample(self,batch_size, steps_per_epoch, input_sequence_length, target_sequence_length):
@@ -78,7 +78,7 @@ class BeijingGenerator:
                 output_batches.append(output_data)
 
                 start_index += (input_sequence_length + target_sequence_length)
-                decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
+                decoder_input_batches = np.zeros((batch_size, target_sequence_length, 11))
             yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
 
 
