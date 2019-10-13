@@ -45,6 +45,8 @@ class BeijingGenerator:
         y_data = BeijingGenerator.y_train
 
         while True:
+            if (start_index + input_sequence_length + target_sequence_length) > 500:
+              start_index = 0
             input_batches = []
             output_batches = []
             for _ in range(steps_per_epoch):
