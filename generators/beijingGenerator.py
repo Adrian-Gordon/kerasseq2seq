@@ -151,7 +151,7 @@ class BeijingGenerator:
 #gd = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv')
 #gd.generateTrainingSample(2,1,10,5)
 
-
+'''
 beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(2,1,10,5)
 
 inputs, decoder_outputs = next(beijing_generator)
@@ -159,7 +159,7 @@ inputs, decoder_outputs = next(beijing_generator)
 #print(inputs[0])
 print(inputs[1])
 #print(decoder_outputs)
-
+'''
 
 '''
 inputs, decoder_outputs = next(beijing_generator)
