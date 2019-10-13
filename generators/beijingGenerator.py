@@ -47,9 +47,10 @@ class BeijingGenerator:
         while True:
             if (start_index + input_sequence_length + target_sequence_length) > 500:
               start_index = 0
-            input_batches = []
-            output_batches = []
+
             for _ in range(steps_per_epoch):
+              input_batches = []
+              output_batches = []
 
               for x in range(batch_size):   #build a batch
                   an_input_sequence = x_data[start_index : start_index + input_sequence_length]
@@ -162,13 +163,17 @@ class BeijingGenerator:
 #gd.generateTrainingSample(2,1,10,5)
 
 '''
-beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(2,2,10,5)
+beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(batch_size=50, steps_per_epoch=5, input_sequence_length=20, target_sequence_length=20)
 
+i = 0
 while True:
   inputs, decoder_outputs = next(beijing_generator)
-  print(inputs[0].shape)
-  print(inputs[1].shape)
-  print(decoder_outputs.shape)
+  if inputs[0].shape[0] != 50:
+    print(i)
+    print(inputs[0].shape)
+    print(inputs[1].shape)
+    print(decoder_outputs.shape)
+  i = i + 1
 
 '''
 
