@@ -72,7 +72,7 @@ class BeijingGenerator:
             input_batches = []
             output_batches = []
             for x in range(batch_size):
-                if (start_index + input_sequence_length + target_sequence_length) > 1000:
+                if (start_index + input_sequence_length + target_sequence_length) > 500:
                   start_index = 0
 
                 an_input_sequence = x_data[start_index : start_index + input_sequence_length]
