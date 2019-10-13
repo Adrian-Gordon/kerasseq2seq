@@ -57,7 +57,7 @@ class BeijingGenerator:
                 output_batches.append(output_data)
 
                 start_index += (input_sequence_length + target_sequence_length)
-            decoder_input_batches = np.zeros((batch_size, target_sequence_length, 11))
+            decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
             yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
 
     def generateTestSample(self,batch_size, steps_per_epoch, input_sequence_length, target_sequence_length):
@@ -78,7 +78,7 @@ class BeijingGenerator:
                 output_batches.append(output_data)
 
                 start_index += (input_sequence_length + target_sequence_length)
-                decoder_input_batches = np.zeros((batch_size, target_sequence_length, 11))
+            decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
             yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
 
 
@@ -151,15 +151,15 @@ class BeijingGenerator:
 #gd = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv')
 #gd.generateTrainingSample(2,1,10,5)
 
-'''
+
 beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(2,1,10,5)
 
 inputs, decoder_outputs = next(beijing_generator)
 
-print(inputs[0])
+#print(inputs[0])
 print(inputs[1])
-print(decoder_outputs)
-'''
+#print(decoder_outputs)
+
 
 '''
 inputs, decoder_outputs = next(beijing_generator)
