@@ -47,21 +47,23 @@ class BeijingGenerator:
         while True:
             input_batches = []
             output_batches = []
-            for x in range(batch_size):
-                an_input_sequence = x_data[start_index : start_index + input_sequence_length]
-                input_data = np.array(an_input_sequence[['pm2.5','DEWP', 'TEMP', 'PRES', 'Iws', 'Is', 'Ir', 'cbwd_NE', 'cbwd_NW', 'cbwd_SE', 'cbwd_cv']])
-                input_batches.append(input_data)
+            for _ in range(steps_per_epoch):
 
-                an_output_sequence = x_data[start_index + input_sequence_length  : start_index + input_sequence_length + target_sequence_length]
-                output_data = np.array(an_output_sequence[['pm2.5']])
-                output_batches.append(output_data)
+              for x in range(batch_size):   #build a batch
+                  an_input_sequence = x_data[start_index : start_index + input_sequence_length]
+                  input_data = np.array(an_input_sequence[['pm2.5','DEWP', 'TEMP', 'PRES', 'Iws', 'Is', 'Ir', 'cbwd_NE', 'cbwd_NW', 'cbwd_SE', 'cbwd_cv']])
+                  input_batches.append(input_data)
 
-                if (start_index + input_sequence_length + target_sequence_length) > x_data.shape[0]:
-                  start_index = 0
-                else:
-                  start_index += (input_sequence_length + target_sequence_length)
-            decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
-            yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
+                  an_output_sequence = x_data[start_index + input_sequence_length  : start_index + input_sequence_length + target_sequence_length]
+                  output_data = np.array(an_output_sequence[['pm2.5']])
+                  output_batches.append(output_data)
+
+                  if (start_index + input_sequence_length + target_sequence_length) > x_data.shape[0]:
+                    start_index = 0
+                  else:
+                    start_index += (input_sequence_length + target_sequence_length)
+              decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
+              yield([np.array(input_batches), decoder_input_batches], np.array(output_batches))
 
     def generateTestSample(self,batch_size, steps_per_epoch, input_sequence_length, target_sequence_length):
         start_index = 0
@@ -158,10 +160,16 @@ class BeijingGenerator:
 #gd.generateTrainingSample(2,1,10,5)
 
 '''
-beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(2,1,10,5)
+beijing_generator = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv').generateTrainingSample(2,2,10,5)
 
 while True:
   inputs, decoder_outputs = next(beijing_generator)
+  print(inputs[0].shape)
+  print(inputs[1].shape)
+  print(decoder_outputs.shape)
+
+'''
+
 '''
 #print(inputs[0])
   #print(inputs[1])
@@ -169,12 +177,14 @@ while True:
 
 
 '''
-inputs, decoder_outputs = next(beijing_generator)
+
+'''inputs, decoder_outputs = next(beijing_generator)
 
 print(inputs[0])
 print(inputs[1])
 print(decoder_outputs)
 '''
+
 
 #print(BeijingGenerator.X_train[0:30])
 #test_inputs, test_outputs = gd.getTestSample(30,5,0)
