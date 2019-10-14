@@ -15,7 +15,7 @@ def plot_prediction(x, y_true, y_pred):
 
     plt.figure(figsize=(12, 3))
 
-    output_dim = x.shape[-1]
+    output_dim = y_true.shape[-1]
     for j in range(output_dim):
         past = x[:, j] 
         true = y_true[:, j]
