@@ -6,10 +6,38 @@ class SeqToSeqModel:
     self.config = config
 
   def build(self):
+    #Build the encoder
+    # Define an input sequence.
+    self.encoder_inputs = keras.layers.Input(shape=(None, self.config["num_input_features"]))
+    self.encoder_states = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True
+                                          kernel_regularizer=self.config["kernel_regulariser"],
+                                          recurrent_regularizer=self.config["recurrent_regulariser"],
+                                          bias_regularizer=self.config["bias_regulariser"])(self.encoder_inputs)[1] #second element of the returned array is the encoder state
+    #define the decoder
+
+    self.decoder_inputs = keras.layers.Input(shape=(None, 1))
+
+    self.decoder_outputs = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True
+                                          kernel_regularizer=self.config["kernel_regulariser"],
+                                          recurrent_regularizer=self.config["recurrent_regulariser"],
+                                          bias_regularizer=self.config["bias_regulariser"])(self.encoder_inputs, initial_state = self.encoder_states)
+
+    #define the output layer
+
+    self.outputs = keras.layers.Dense(self.config["num_output_features"],
+                                       activation='linear',
+                                       kernel_regularizer=self.config["kernel_regulariser"],
+                                       bias_regularizer=self.config["bias_regulariser"])(decoder_outputs)[0] #first element of the returned array is the hidden state for each time step
+
+    self.model = keras.models.Model(inputs=[self.encoder_inputs, self.decoder_inputs], outputs=self.outputs)
+    self.model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
+
+  def build_old(self):
 
     #Build the encoder
     # Define an input sequence.
     self.encoder_inputs = keras.layers.Input(shape=(None, self.config["num_input_features"]))
+
 
     # Create a list of RNN Cells, these are then concatenated into a single layer
     # with the RNN layer.
