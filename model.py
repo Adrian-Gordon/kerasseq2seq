@@ -9,7 +9,7 @@ class SeqToSeqModel:
     #Build the encoder
     # Define an input sequence.
     self.encoder_inputs = keras.layers.Input(shape=(None, self.config["num_input_features"]))
-    self.encoder_states = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True
+    self.encoder_states = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True,
                                           kernel_regularizer=self.config["kernel_regulariser"],
                                           recurrent_regularizer=self.config["recurrent_regulariser"],
                                           bias_regularizer=self.config["bias_regulariser"])(self.encoder_inputs)[1] #second element of the returned array is the encoder state
@@ -17,7 +17,7 @@ class SeqToSeqModel:
 
     self.decoder_inputs = keras.layers.Input(shape=(None, 1))
 
-    self.decoder_outputs = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True
+    self.decoder_outputs = keras.layers.GRU(self.config["gru_neurons"], return_sequences=True, return_state=True,
                                           kernel_regularizer=self.config["kernel_regulariser"],
                                           recurrent_regularizer=self.config["recurrent_regulariser"],
                                           bias_regularizer=self.config["bias_regulariser"])(self.encoder_inputs, initial_state = self.encoder_states)
