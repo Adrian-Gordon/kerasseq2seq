@@ -14,8 +14,8 @@ class SeqToSeqModel:
     # Create a list of RNN Cells, these are then concatenated into a single layer
     # with the RNN layer.
     self.encoder_cells = []
-    #for hidden_neurons in self.config["layers"]:
-    self.encoder_cells.append(keras.layers.GRUCell(35,
+    for hidden_neurons in self.config["layers"]:
+      self.encoder_cells.append(keras.layers.GRUCell(hidden_neurons,
                                                   kernel_regularizer=self.config["kernel_regulariser"],
                                                   recurrent_regularizer=self.config["recurrent_regulariser"],
                                                   bias_regularizer=self.config["bias_regulariser"]))
