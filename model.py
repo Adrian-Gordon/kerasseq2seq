@@ -27,7 +27,7 @@ class SeqToSeqModel:
     self.outputs = keras.layers.Dense(self.config["num_output_features"],
                                        activation='linear',
                                        kernel_regularizer=self.config["kernel_regulariser"],
-                                       bias_regularizer=self.config["bias_regulariser"])(decoder_outputs[0]) #first element of the returned array is the hidden state for each time step
+                                       bias_regularizer=self.config["bias_regulariser"])(self.decoder_outputs[0]) #first element of the returned array is the hidden state for each time step
 
     self.model = keras.models.Model(inputs=[self.encoder_inputs, self.decoder_inputs], outputs=self.outputs)
     self.model.compile(optimizer=self.config["optimiser"], loss=self.config["loss"])
