@@ -27,7 +27,7 @@ class SeqToSeqModel:
     # Discard encoder outputs and only keep the states.
     # The outputs are of no interest to us, the encoder's
     # job is to create a state describing the input sequence.
-    self.encoder_states = self.encoder_outputs_and_states[1:]
+    self.encoder_states = self.encoder_outputs_and_states[1] #1:
 
 #a dense layer to  resize the output states from the encoder to match the required shape of the input states to the decoder 
     self.encoder_dense = keras.layers.Dense(self.config["target_sequence_length"],
