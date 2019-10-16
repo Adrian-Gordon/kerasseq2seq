@@ -101,69 +101,6 @@ class BeijingGenerator:
 
 
 
-'''
- def getTrainingSample(self,batch_size, input_seq_length, output_seq_length):
-    x_data = BeijingGenerator.X_train
-    y_data = BeijingGenerator.y_train
-    input_batches = []
-    output_batches = []
-    n_starting_indexes = len(x_data) / (input_seq_length + output_seq_length)
-
-    for i in range(batch_size):
-      starting_index = np.random.randint(0,n_starting_indexes)
-      starting_index_offset = starting_index * (input_seq_length + output_seq_length)
-
-      an_input_batch_y = x_data[starting_index_offset: starting_index_offset + input_seq_length]
-     # print('an input batch: ' , an_input_batch_y)
-      input_data = an_input_batch_y[['pm2.5','DEWP', 'TEMP', 'PRES', 'Iws', 'Is', 'Ir', 'cbwd_NE', 'cbwd_NW', 'cbwd_SE', 'cbwd_cv']]
-     # print(input_data)
-      input_batches.append(np.array(input_data))
-
-      an_output_batch_y = y_data[starting_index_offset + input_seq_length:starting_index_offset + input_seq_length + output_seq_length]
-     # print('an output batch',an_output_batch_y)
-      #output_data = an_output_batch_y[['pm2.5']]
-      output_batches.append(np.array(an_output_batch_y))
-      #input_batches = np.array(input_batches).reshape(batch_size, input_seq_length, 3)
-    #print(input_batches)
-    #print(np.array(input_batches)).reshape(batch_size, input_seq_length, 3)
-    return input_batches, output_batches
-
- def getTestSample(self, input_seq_length, output_seq_length,offset):
-    input_batches = []
-    #output_batches =[]
-    the_input_batch = BeijingGenerator.X_test[offset:offset + input_seq_length]
-    the_batch_data = the_input_batch[['pm2.5','DEWP', 'TEMP', 'PRES', 'Iws', 'Is', 'Ir', 'cbwd_NE', 'cbwd_NW', 'cbwd_SE', 'cbwd_cv']]
-    input_batches.append(np.array(the_batch_data))
-
-    the_output_batch = np.array(BeijingGenerator.y_test[offset+input_seq_length: offset+ input_seq_length +  output_seq_length])
-
-    #print(the_output_batch)
-    #outputs= np.array([BeijingGenerator.y_train[offset + input_seq_length: offset + input_seq_length + output_seq_length]])
-
-    return input_batches, the_output_batch
-
- def reshape(self, input_array, sequence_length, input_dimension):
-  reshaped = [None]* sequence_length 
-
-  for t in range(sequence_length):
-    x = input_array[:,t].reshape(-1,input_dimension)
-    reshaped[t]=x
-  return(np.array(reshaped))
-
- def plot(self):
-    cols_to_plot = ["pm2.5", "DEWP", "TEMP", "PRES", "Iws", "Is", "Ir"]
-    i = 1
-    # plot each column
-    plt.figure(figsize = (10,12))
-    for col in cols_to_plot:
-        plt.subplot(len(cols_to_plot), 1, i)
-        plt.plot(BeijingGenerator.X_train[col])
-        plt.title(col, y=0.5, loc='left')
-        i += 1
-    plt.show()
-
-'''
-
 #test
 
 #gd = BeijingGenerator('../data/PRSA_data_2010.1.1-2014.12.31.csv')
