@@ -72,7 +72,7 @@ class BFGenerator:
       start_index = start_index + source_sequence_length
       within_sequence_offset = 0
 
-    if(start_index >= 70000):#datafile_length): #go back to the start
+    if(start_index >= datafile_length):#datafile_length): #go back to the start
         #print("Reached the end, go back to the start")
         start_index = 0
         within_sequence_offset = 0
