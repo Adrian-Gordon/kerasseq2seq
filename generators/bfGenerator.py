@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np 
+import logging
+
 
 class BFGenerator:
   def __init__(self, datafile_path,source_sequence_length, offset, input_sequence_length, target_sequence_length):
@@ -10,12 +12,15 @@ class BFGenerator:
     BFGenerator.within_sequence_iterations = source_sequence_length - offset -input_sequence_length - target_sequence_length + 1
 
     BFGenerator.n_sequences = len(BFGenerator.x_train) / source_sequence_length  * BFGenerator.within_sequence_iterations
-
+    self.logger = logging.getLogger('bfGenerator')
+    self.logger.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('./logging/bfgeneratorlogger.log')
+    fh.setLevel(logging.DEBUG)
+    self.logger.addHandler(fh)
     #print(BFGenerator.x_train)
     #print(BFGenerator.y_train)  
 
   def generateTrainingSample(self,batch_size, source_sequence_length, offset, input_sequence_length, target_sequence_length):
-
     start_index = 0
     within_sequence_offset = 0
     input_batches =[]
@@ -33,7 +38,6 @@ class BFGenerator:
       input_batches.append(input_data)
       output_data = np.array(output_sequence[['layprice1']])
       output_batches.append(output_data)
-
       if len(input_batches) == batch_size:
         #print(input_batches)
         #print(output_batches)
@@ -42,6 +46,8 @@ class BFGenerator:
         decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
         input_batches = []
         output_batches = []
+        self.logger.debug("size=%d ", len(input_batches_array))
+        #self.logger.debug('batch input shape')
         yield([input_batches_array, decoder_input_batches], np.array(output_batches_array))
 
       #print(i, start_index, within_sequence_offset)
@@ -90,7 +96,7 @@ class BFGenerator:
 
 #test
 '''
-bfgenerator = BFGenerator("/home/adrian/Development/bftimeseries/nodejs/data/preprocessed_generate.csv",60, 30, 10, 5)
+bfgenerator = BFGenerator("/Users/adriangordon/Development/bftimeseries/nodejs/data/test.csv",60, 30, 10, 5)
 print(BFGenerator.n_sequences)
 print(BFGenerator.within_sequence_iterations)
 
@@ -100,8 +106,7 @@ for i in range(200):
   inputs, outputs = next(the_generator)
 #print(inputs[0].shape, inputs[1].shape, outputs.shape)
   print(i,"Inputs:" ,inputs[0][0][0][0], "Outputs: ", outputs[0][0][0])
-
+'''
 
 #rval = bfgenerator.getNextSequence(540, 30, 16, 16, 10, 5, 60, 600)
 #print(rval
-'''
