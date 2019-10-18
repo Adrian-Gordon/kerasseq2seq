@@ -46,7 +46,7 @@ class BFGenerator:
         decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
         input_batches = []
         output_batches = []
-        self.logger.debug("size=%d ", len(input_batches_array))
+        #self.logger.debug("size=%d ", len(input_batches_array))
         #self.logger.debug('batch input shape')
         yield([input_batches_array, decoder_input_batches], np.array(output_batches_array))
 
