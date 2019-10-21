@@ -47,7 +47,7 @@ class BFGenerator:
         input_batches = []
         output_batches = []
         self.logger.debug("size=%d start_index=%d within_sequqnce_offset %d", len(input_batches_array), start_index, within_sequence_offset)
-        self.logger.debug('batch input shape: ', input_batches_array.shape)
+        print('batch input shape: ', input_batches_array.shape)
         yield([input_batches_array, decoder_input_batches], np.array(output_batches_array))
 
       #print(i, start_index, within_sequence_offset)
