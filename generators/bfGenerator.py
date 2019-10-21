@@ -67,7 +67,7 @@ class BFGenerator:
               output sequence
 
     '''
-    self.loger.debug("getNextSequence start_index: %d dataset_offset: %d within_sequence_offset: %d", start_index, dataset_offset, within_sequence_offset
+    self.loger.debug("getNextSequence start_index: %d dataset_offset: %d within_sequence_offset: %d within_sequqnce_iterations: %d", start_index, dataset_offset, within_sequence_offset, within_sequence_iterations)
     if within_sequence_offset == within_sequence_iterations :
       #print("end of within sequence iterations")
       start_index = start_index + source_sequence_length
