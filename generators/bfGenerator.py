@@ -14,13 +14,13 @@ class BFGenerator:
     BFGenerator.n_sequences = len(BFGenerator.x_train) / source_sequence_length  * BFGenerator.within_sequence_iterations
     #self.logger = logging.getLogger('bfGenerator')
     #self.logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler('./logging/bfgeneratorlogger.log')
-    fh.setLevel(logging.DEBUG)
+    #fh = logging.FileHandler('./logging/bfgeneratorlogger.log')
+    #fh.setLevel(logging.DEBUG)
     #self.logger.addHandler(fh)
     #print(BFGenerator.x_train)
     #print(BFGenerator.y_train)  
 
-  def generateTrainingSample(self,batch_size, source_sequence_length, offset, input_sequence_length, target_sequence_length):
+  def generateTrainingSample(self,batch_size, source_sequence_length, offset, input_attributes,input_sequence_length, output_attributes,target_sequence_length):
     start_index = 0
     within_sequence_offset = 0
     input_batches =[]
@@ -35,10 +35,10 @@ class BFGenerator:
       start_index, within_sequence_offset, input_sequence, output_sequence  = self.getNextSequence(start_index, offset, within_sequence_iterations, within_sequence_offset, input_sequence_length, target_sequence_length, source_sequence_length, datafile_length)
 
      # input_data = np.array(input_sequence[['layprice1','laydepth1','layprice2','laydepth2','layprice3','laydepth3','layprice4','laydepth4','layprice5','laydepth5','layprice6','laydepth6','layprice7','laydepth7','layprice8','laydepth8','layprice9','laydepth9','layprice10','laydepth10','backprice1','backdepth1','backprice2','backdepth2','backprice3','backdepth3','backprice4','backdepth4','backprice5','backdepth5','backprice6','backdepth6','backprice7','backdepth7','backprice8','backdepth8','backprice9','backdepth9','backprice10','backdepth10']])
-      input_data = np.array(input_sequence[['layprice1','laydepth1','backprice1','backdepth1']])
+      input_data = np.array(input_sequence[input_attributes])
 
       input_batches.append(input_data)
-      output_data = np.array(output_sequence[['layprice1']])
+      output_data = np.array(output_sequence[output_attributes])
       output_batches.append(output_data)
       if len(input_batches) == batch_size:
         #print(input_batches)
@@ -99,17 +99,17 @@ class BFGenerator:
 
 #test
 '''
-bfgenerator = BFGenerator("/Users/adriangordon/Development/bftimeseries/nodejs/data/test.csv",60, 30, 10, 5)
+bfgenerator = BFGenerator("/home/adrian/Development/bftimeseries/nodejs/data/test.csv",60, 30, 10,5)
 print(BFGenerator.n_sequences)
 print(BFGenerator.within_sequence_iterations)
 
-the_generator = bfgenerator.generateTrainingSample(10, 60, 30, 10, 5)
+the_generator = bfgenerator.generateTrainingSample(10, 60, 30,['layprice1','laydepth1','backprice1','backdepth1'],10,['layprice1'],5)
 
 for i in range(200):
   inputs, outputs = next(the_generator)
 #print(inputs[0].shape, inputs[1].shape, outputs.shape)
   print(i,"Inputs:" ,inputs[0][0][0][0], "Outputs: ", outputs[0][0][0])
-'''
 
+'''
 #rval = bfgenerator.getNextSequence(540, 30, 16, 16, 10, 5, 60, 600)
 #print(rval
