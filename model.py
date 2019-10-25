@@ -46,7 +46,6 @@ class SeqToSeqModel:
 
   def load(self):
     self.model = load_model(self.config['model_save_path'])
-    print(self.model.summary())
 
 
 
