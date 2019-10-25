@@ -1,6 +1,8 @@
 import numpy as np
 import keras
 
+from keras.models import load_model
+
 class SeqToSeqModel:
   def __init__(self, config):
     self.config = config
