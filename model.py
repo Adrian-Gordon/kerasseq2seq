@@ -39,5 +39,12 @@ class SeqToSeqModel:
 
     return self.model.predict([x_encoder, x_decoder])
 
+  def save(self):
+    self.model.save(self.config['model_save_path'])
+
+  def load(self):
+    self.model.load(self.config['model_save_path'])
+    print(model.summary)
+
 
 
