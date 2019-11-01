@@ -37,8 +37,8 @@ class BFGenerator:
      # input_data = np.array(input_sequence[['layprice1','laydepth1','layprice2','laydepth2','layprice3','laydepth3','layprice4','laydepth4','layprice5','laydepth5','layprice6','laydepth6','layprice7','laydepth7','layprice8','laydepth8','layprice9','laydepth9','layprice10','laydepth10','backprice1','backdepth1','backprice2','backdepth2','backprice3','backdepth3','backprice4','backdepth4','backprice5','backdepth5','backprice6','backdepth6','backprice7','backdepth7','backprice8','backdepth8','backprice9','backdepth9','backprice10','backdepth10']])
       try:
 
-        input_data = self.normalise_to_first_value(np.array(input_sequence[input_attributes]))
-        output_data = self.normalise_to_first_value(np.array(output_sequence[output_attributes]))
+        input_data = self.normalise_to_first_value(np.array(input_sequence[input_attributes])[0],np.array(input_sequence[input_attributes]))
+        output_data = self.normalise_to_first_value(np.array(input_sequence[input_attributes])[0],np.array(output_sequence[output_attributes]))
       except:
         pass
       else:
@@ -101,12 +101,12 @@ class BFGenerator:
     within_sequence_offset = within_sequence_offset + 1
     return start_index, within_sequence_offset, input_sequence, output_sequence
 
-  def normalise_to_first_value(self, input_data):
+  def normalise_to_first_value(self, start_row_data, input_data):
     #print(input_data)
     #print(input_data.shape[1])
     normalised = []
     for col_i in range(input_data.shape[1]):
-      normalised_col = [((float(p) / float(input_data[0, col_i])) - 1) for p in input_data[:, col_i]]
+      normalised_col = [((float(p) / float(start_row_data[col_i])) - 1) for p in input_data[:, col_i]]
       normalised.append(normalised_col)
     normalised = np.array(normalised).T
     return(normalised)
@@ -116,7 +116,9 @@ if __name__ == '__main__':
   print(BFGenerator.n_sequences)
   print(BFGenerator.within_sequence_iterations)
 
-  the_generator = bfgenerator.generateTrainingSample(90000, 60, 30,['layprice1','laydepth1','backprice1','backdepth1'],10,['layprice1','backprice1'],5)
+  the_generator = bfgenerator.generateTrainingSample(1, 60, 30,['layprice1','laydepth1','backprice1','backdepth1'],10,['layprice1','backprice1'],5)
   inputs, outputs = next(the_generator)
   print(inputs[0].shape, inputs[1].shape, outputs.shape)
+  print(inputs)
+  print(outputs)
   
