@@ -98,10 +98,13 @@ class BFGenerator:
     #print(input_data)
     #print(input_data.shape[1])
     normalised = []
-    for col_i in range(input_data.shape[1]):
-      normalised_col = [((float(p) / float(input_data[0, col_i])) - 1) for p in input_data[:, col_i]]
-      normalised.append(normalised_col)
-    normalised = np.array(normalised).T
+    try:
+      for col_i in range(input_data.shape[1]):
+        normalised_col = [((float(p) / float(input_data[0, col_i])) - 1) for p in input_data[:, col_i]]
+        normalised.append(normalised_col)
+      normalised = np.array(normalised).T
+    except:
+      print(input_data)
     #print(normalised)
     return(normalised)
 
