@@ -48,8 +48,8 @@ class BFGenerator:
         decoder_input_batches = np.zeros((batch_size, target_sequence_length, 1))
         input_batches = []
         output_batches = []
-        print("size=%d start_index=%d within_sequqnce_offset %d", len(input_batches_array), start_index, within_sequence_offset)
-        print('batch input shape: ', input_batches_array.shape)
+        #print("size=%d start_index=%d within_sequqnce_offset %d", len(input_batches_array), start_index, within_sequence_offset)
+        #print('batch input shape: ', input_batches_array.shape)
         yield([input_batches_array, decoder_input_batches], np.array(output_batches_array))
 
       #print(i, start_index, within_sequence_offset)
@@ -96,20 +96,15 @@ class BFGenerator:
     return start_index, within_sequence_offset, input_sequence, output_sequence
 
 
+if __name__ == '__main__':
+  bfgenerator = BFGenerator("/Users/adriangordon/Development/kerasseq2seq/data/testdata.csv",60, 30, 10,5)
+  print(BFGenerator.n_sequences)
+  print(BFGenerator.within_sequence_iterations)
 
-#test
-'''
-bfgenerator = BFGenerator("/home/adrian/Development/bftimeseries/nodejs/data/test.csv",60, 30, 10,5)
-print(BFGenerator.n_sequences)
-print(BFGenerator.within_sequence_iterations)
+  the_generator = bfgenerator.generateTrainingSample(10, 60, 30,['layprice1','laydepth1','backprice1','backdepth1'],10,['layprice1'],5)
 
-the_generator = bfgenerator.generateTrainingSample(10, 60, 30,['layprice1','laydepth1','backprice1','backdepth1'],10,['layprice1'],5)
+  for i in range(200):
+    inputs, outputs = next(the_generator)
+    #print(inputs[0].shape, inputs[1].shape, outputs.shape)
+    print(i,"Inputs:" ,inputs[0][0][0][0], "Outputs: ", outputs[0][0][0])
 
-for i in range(200):
-  inputs, outputs = next(the_generator)
-#print(inputs[0].shape, inputs[1].shape, outputs.shape)
-  print(i,"Inputs:" ,inputs[0][0][0][0], "Outputs: ", outputs[0][0][0])
-
-'''
-#rval = bfgenerator.getNextSequence(540, 30, 16, 16, 10, 5, 60, 600)
-#print(rval
