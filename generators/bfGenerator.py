@@ -38,7 +38,7 @@ class BFGenerator:
       try:
 
         input_data = self.normalise_to_first_value(np.array(input_sequence[input_attributes])[0],np.array(input_sequence[input_attributes]))
-        output_data = self.normalise_to_first_value(np.array(input_sequence[input_attributes])[0],np.array(output_sequence[output_attributes]))
+        output_data = self.normalise_to_first_value(np.array(input_sequence[output_attributes])[0],np.array(output_sequence[output_attributes]))
       except:
         pass
       else:
@@ -103,6 +103,7 @@ class BFGenerator:
 
   def normalise_to_first_value(self, start_row_data, input_data):
     #print(input_data)
+    #print(start_row_data)
     #print(input_data.shape[1])
     normalised = []
     for col_i in range(input_data.shape[1]):
