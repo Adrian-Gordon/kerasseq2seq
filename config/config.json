@@ -1,0 +1,8 @@
+{
+    "num_input_features": 4,
+    "num_output_features":2,
+    "input_sequence_length":10,
+    "target_sequence_length": 5,
+    "model_save_path":"./trainedmodels/kerasmodel.h5"
+    
+}

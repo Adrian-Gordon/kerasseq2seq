@@ -4,14 +4,8 @@ import numpy as np
 
 from generators import BFGenerator
 
-config= {
-    "num_input_features": 4,
-    "num_output_features":2,
-    "input_sequence_length":10,
-    "target_sequence_length": 5,
-    "model_save_path":"./data/kerasmodel.h5"
-    
-}
+with open('./config/config.json') as json_file:
+    config = json.load(json_file)
 
 
 class InferenceServerHandler(BaseHTTPRequestHandler):
@@ -43,3 +37,4 @@ if __name__ == '__main__':
   server = HTTPServer(('',3002), InferenceServerHandler)
   print("listening on port 3002")
   server.serve_forever()
+
