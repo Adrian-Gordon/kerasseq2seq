@@ -140,17 +140,7 @@ if __name__ == '__main__':
   bfgenerator = BFGenerator("/home/adrian/Development/bftimeseries/nodejs/data/generate.csv",60, 30, 10,5)
 
   #data_to_normalise = np.array(bfgenerator.data[['layprice1','laydepth1','backprice1','backdepth1']])[30:40]
-  data_to_normalise = np.array(
- [[9.6,16.63,10.4,25.41],
- [ 10.5,27.53,10.,3.54], 
- [ 11.5,23.,    10.5,   45.75], 
- [ 12.,10.58,11.5,20.7], 
- [ 12.5,   16.73,  11.5,   29.91],
- [ 12.,    11.62,  11.5,   31.73],
- [ 12.5,   23.52,  12.,    11.  ],
- [ 12.5 ,  16.04,  12.,   135.51],
- [ 12.5 ,  33.58,  12.,    83.07],
- [ 12.5 ,   5.,    12.,    71.94]])
+  data_to_normalise = np.array([[9.6,16.63,10.4,25.41],[10.5,27.53,10.0,3.54],[11.5,23.0,10.5,45.75],[12.0,10.58,11.5,20.7],[12.5,16.73,11.5,29.91],[12.0,11.62,11.5,31.73],[12.5,23.52,12.0,11.0],[12.5,16.04,12.0,135.51],[12.5,33.58,12.0,83.07],[12.5,5.0,12.0,71.94]])
 
   prediction_input_data, decoder_input_data = bfgenerator.prepare_prediction_data(data_to_normalise, 5)
   print(prediction_input_data, decoder_input_data)
