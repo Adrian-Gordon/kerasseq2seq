@@ -1,5 +1,4 @@
 FROM ubuntu:16.04 as opencv-builder
-MAINTAINER "Andrei Maksimov"
 
 RUN apt-get update && apt-get install -y wget ca-certificates \
     build-essential cmake pkg-config \
@@ -32,10 +31,11 @@ RUN cd opencv-3.3.1 && \
     cd / && rm -Rf /opencv-3.3.1 /opencv_contrib-3.3.1
 
 RUN pip3 install tensorflow && \
-    pip3 install numpy pandas sklearn pyyaml h5py && \
+    pip3 install numpy pandas==0.24.2 sklearn pyyaml h5py && \
     pip3 install keras --no-deps && \
     pip3 install opencv-python && \
-    pip3 install imutils
+    pip3 install imutils && \
+    pip3 install matplotlib==3.0
 
 
 WORKDIR /usr/src/app
@@ -46,4 +46,6 @@ COPY utils.py .
 COPY generators generators/.
 
 EXPOSE 3002
+
+CMD cd /usr/src/app && python3 -u inferenceServer.py
 
