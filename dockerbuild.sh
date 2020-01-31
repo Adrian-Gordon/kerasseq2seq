@@ -1,1 +1,1 @@
-docker build -f Dockerfile.inferenceserver -t inferenceserver:1.0 .
+docker build --network=host -f Dockerfile.inferenceserver -t inferenceserver:1.0 . 

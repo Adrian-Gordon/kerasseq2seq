@@ -38,7 +38,7 @@ class InferenceServerHandler(BaseHTTPRequestHandler):
     prediction_input_data, decoder_input_data = BFGenerator.prepare_prediction_data(self.data, config['target_sequence_length'])
     predicted_y=model.predict(prediction_input_data, decoder_input_data)
     print(predicted_y)
-    post_processed_predictions = BFGenerator.process_prediction(self.data,[0,2], predicted_y[0])
+    post_processed_predictions = BFGenerator.process_prediction(self.data,config['output_data_indexes'], predicted_y[0])
     print(post_processed_predictions)
     self.wfile.write(json.dumps(post_processed_predictions.tolist()).encode("utf-8"))
     #self.wfile.write(json.dumps(model.model.summary()).encode("utf-8"))
