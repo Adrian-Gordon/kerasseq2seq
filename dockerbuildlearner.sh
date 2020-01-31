@@ -1,0 +1,1 @@
+docker build --network=host -f Dockerfile.learner -t learner:1.0 . 
