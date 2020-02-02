@@ -1,0 +1,9 @@
+{
+	"sourceSequenceLength": 60,
+	"offset": 30,
+	"inputSequenceLength": 10,
+	"outputSequenceLength": 5,
+	"inputFilePath":"/Users/adriangordon/Development/kerasseq2seq/data/generate.csv",
+	"inputAttributes":["layprice1","laydepth1","backprice1","backdepth1"],
+	"outputAttributes":["layprice1","backprice1"]
+}
