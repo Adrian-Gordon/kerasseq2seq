@@ -1,1 +1,1 @@
-docker run -v /Users/adriangordon/Development/kerasseq2seq/config:/usr/src/app/config -v /Users/adriangordon/Development/kerasseq2seq/trainedmodels:/usr/src/app/trainedmodels -p 3002:3002 inferenceserver:1.0
+docker run -v /home/adrian/Development/kerasseq2seq/config:/usr/src/app/config -v /home/adrian/Development/kerasseq2seq/trainedmodels:/usr/src/app/trainedmodels -p 3002:3002 inferenceserver:1.0
