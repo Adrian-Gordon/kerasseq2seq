@@ -3,7 +3,7 @@ const fs = require('fs')
 const nconf = require('./config/conf.js').nconf
 const csv = require('csv-parser')
 const request = require('request-promise')
-const { Trader } = require('trader')
+const { Trader } = require('./trader.js')
 
 
 const filePath = nconf.get('inputFilePath')
@@ -101,24 +101,45 @@ const processFile = () => {
   }
 
   const processSequences = async () => {
-    for(let i = 0; i < 20; i++){
+    for(let i = 0; i < 1000; i++){
       const is = sequences[i].inputSequence
       const os = sequences[i].outputSequence
       const rs = sequences[i].remainingSequence
-      const response = await doSimulate(is)
+      const response = await doPrediction(is)
       const predictions = response.body
       const lastObservations = is[inputSequenceLength -1]
+      const lastObservedLayprice = lastObservations[outputIndexes[0]]
+      const lastObservedBackPrice = lastObservations[outputIndexes[1]]
       const lastPredictions = predictions[outputSequenceLength -1]
-      console.log(lastObservations)
-      console.log(lastPredictions)
+      const lastPredictedLayprice = lastPredictions[0]
+      const lastPredictedBackprice = lastPredictions[1]
+//      console.log(lastObservations)
+//      console.log(lastPredictions)
+//      console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+
+      if(Trader.isTradingOpportunity(lastObservedBackPrice, lastPredictedLayprice, targetTicks )){
+        //it's a back to lay opportunity
+        console.log("Back to lay Opportunity")
+        console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+
+      }
+      else if(Trader.isTradingOpportunity(lastPredictedBackprice, lastObservedLayprice, targetTicks)){
+        //it's a lay to back opportunity
+        console.log("Lay to back Opportunity")
+        console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+
+      }
+      else {
+        console.log("No trade")
+      }
     }
     
 
   }
 
-  const doSimulate = (inputSequence) => {
-    console.log("inputSequence")
-    console.log(inputSequence)
+  const doPrediction = (inputSequence) => {
+ //   console.log("inputSequence")
+ //   console.log(inputSequence)
    /* console.log("outputSequence")
     console.log(outputSequence)
     console.log("remainingSequence")

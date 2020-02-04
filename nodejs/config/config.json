@@ -9,5 +9,5 @@
   "outputIndexes":[0,2],
   "inferenceServiceUri":"http://localhost:3002/predict",
   "targetTicks":10,
-  "stopLossTicks":10
+  "stopLossTicks":-10
 }
