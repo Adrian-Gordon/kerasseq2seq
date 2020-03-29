@@ -88,16 +88,16 @@ class Trader{
 
 
         if(tickDiff >= targetTicks){
-          return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice) //take profit
+          return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice,'profit') //take profit
           break
         }
         if(tickDiff <= stopLossTicks){
-          return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice) //stop loss
+          return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice,'stoploss') //stop loss
           break
         }
       }
 
-      return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice) //close position
+      return Trader.simulateBackToLayTrade(oddsToBack, stakeToBack, observedPrice,'close') //close position
   }
 
   static simulateLayToBack(oddsToLay, stakeToLay, bObserved, targetTicks, stopLossTicks){
@@ -124,21 +124,21 @@ class Trader{
 
 
       if(tickDiff >= targetTicks){
-        return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice) //take profit
+        return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice,'profit') //take profit
         break
       }
       if(tickDiff <= stopLossTicks){
-        return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice) //stop loss
+        return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice,'stoploss') //stop loss
         break
       }
     }
-    return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice) //close position
+    return Trader.simulateLayToBackTrade(oddsToLay, stakeToLay, observedPrice,'close') //close position
 
   }
 
 
 
-  static simulateBackToLayTrade(backOdds, backStake, layOdds){
+  static simulateBackToLayTrade(backOdds, backStake, layOdds, type){
     /*simulate the placing of a back to lay trade
       parameters:
         backOdds -- float, the decimal odds of the back half of the trade
@@ -155,13 +155,14 @@ class Trader{
       'backOdds':backOdds,
       'backStake': backStake, 
       'layOdds':layOdds, 
-      'layStake': layStake
+      'layStake': layStake,
+      'type':type
     }
 
     return(returnVal)
   }
 
-  static simulateLayToBackTrade(layOdds, layStake, backOdds){
+  static simulateLayToBackTrade(layOdds, layStake, backOdds, type){
     /*simulate the placing of a lay to back trade
     parameters:
       layOdds -- float, the decimal odds of the lay part of the trade
@@ -177,7 +178,8 @@ class Trader{
         'backOdds':backOdds,
         'backStake': backStake, 
         'layOdds':layOdds, 
-        'layStake': layStake
+        'layStake': layStake,
+        'type': type
       }
 
       return(returnVal)

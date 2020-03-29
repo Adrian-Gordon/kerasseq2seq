@@ -15,12 +15,15 @@ const inputAttributes = nconf.get('inputAttributes')
 const outputAttributes = nconf.get('outputAttributes')
 const outputIndexes = nconf.get('outputIndexes')
 const targetTicks = nconf.get('targetTicks')
+const stopLossTicks = nconf.get('stopLossTicks')
+const maxPrice = nconf.get('maxPrice')
 
 let itemCount = 0
 let inputItems = []
 let outputItems = []
 
 let sequences = []
+let inputSequencesCount = 0
 
 const processFile = () => {
 
@@ -29,31 +32,43 @@ const processFile = () => {
     .pipe(csv())
     .on('data', (data) => {
     	itemCount++
-    	if(itemCount > sourceSequenceLength){
-    		//console.log("inputItems")
+
+      let inputItem = []
+      for(let i=0;i<inputAttributes.length; i++){
+        const value = data[inputAttributes[i]]
+        inputItem.push(parseFloat(value))
+      }
+      inputItems.push(inputItem)
+
+      let outputItem = []
+      for(let i=0;i<outputAttributes.length; i++){
+        const value = data[outputAttributes[i]]
+        outputItem.push(parseFloat(value))
+      }
+      outputItems.push(outputItem)
+
+    	if(itemCount >= sourceSequenceLength){
+    		//console.log("inputItems" + inputItems.length)
+        //console.log("outputItems" + outputItems.length)
     		//console.log(inputItems)
     		//console.log("outputItems")
     		//console.log(outputItems)
     		processItems(inputItems, outputItems)
+        inputSequencesCount++
+       /* if(inputSequencesCount > 2){
+          for(let i=0;i<sequences.length;i++){
+            console.log(sequences[i].inputSequence)
+            console.log(sequences[i].outputSequence)
+          }
+          process.exit(0)
+        }*/
     		itemCount = 0
     		inputItems = []
     		outputItems = []
     		//process.exit(1)
     	}
 
-    	let inputItem = []
-    	for(let i=0;i<inputAttributes.length; i++){
-    		const value = data[inputAttributes[i]]
-    		inputItem.push(parseFloat(value))
-    	}
-    	inputItems.push(inputItem)
-
-    	let outputItem = []
-    	for(let i=0;i<outputAttributes.length; i++){
-    		const value = data[outputAttributes[i]]
-    		outputItem.push(parseFloat(value))
-    	}
-    	outputItems.push(outputItem)
+   
 
   	})
     .on('end', () => {
@@ -101,38 +116,76 @@ const processFile = () => {
   }
 
   const processSequences = async () => {
-    for(let i = 0; i < 1000; i++){
+    let layToBackReturns = 0.0
+    let backToLayReturns = 0.0
+    let backToLayBets = 0
+    let layToBackBets = 0
+    for(let i = 0; i < sequences.length; i++){
       const is = sequences[i].inputSequence
-      const os = sequences[i].outputSequence
-      const rs = sequences[i].remainingSequence
-      const response = await doPrediction(is)
-      const predictions = response.body
-      const lastObservations = is[inputSequenceLength -1]
-      const lastObservedLayprice = lastObservations[outputIndexes[0]]
-      const lastObservedBackPrice = lastObservations[outputIndexes[1]]
-      const lastPredictions = predictions[outputSequenceLength -1]
-      const lastPredictedLayprice = lastPredictions[0]
-      const lastPredictedBackprice = lastPredictions[1]
-//      console.log(lastObservations)
-//      console.log(lastPredictions)
-//      console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+      if(is[0][0] > 0 && is[0][0] <= maxPrice){
+          //console.log(is)
+          const os = sequences[i].outputSequence
+          //console.log(os)
+          const rs = sequences[i].remainingSequence
+          const rsLay = rs.map(obs => {
+            return(obs[0])
+          })
+          const rsBack = rs.map(obs => {
+            return(obs[1])
+          })
+          const response = await doPrediction(is)
+          const predictions = response.body
+          const lastObservations = is[inputSequenceLength -1]
+          const lastObservedLayprice = lastObservations[outputIndexes[0]]
+          const lastObservedBackPrice = lastObservations[outputIndexes[1]]
+          const lastPredictions = predictions[outputSequenceLength -1]
+          const lastPredictedLayprice = lastPredictions[0]
+          const lastPredictedBackprice = lastPredictions[1]
+    //      console.log(lastObservations)
+    //      console.log(lastPredictions)
+    //      console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+          if(lastObservedLayprice > 0.0){
+              if(Trader.isTradingOpportunity(lastObservedBackPrice, lastPredictedLayprice, targetTicks )){
+                //it's a back to lay opportunity
+                console.log(i + "Back to lay Opportunity")
+                console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+                console.log(is)
+                console.log(os)
+                console.log(rs)
+                console.log(rsLay)
+                console.log(rsBack)
+                console.log(predictions)
+                const returns = Trader.simulateBackToLay(lastObservedBackPrice, 1.0, rsLay, targetTicks, stopLossTicks)
+                console.log("Returns: " + JSON.stringify(returns))
+                backToLayBets++
+                backToLayReturns += returns.returns
 
-      if(Trader.isTradingOpportunity(lastObservedBackPrice, lastPredictedLayprice, targetTicks )){
-        //it's a back to lay opportunity
-        console.log("Back to lay Opportunity")
-        console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
-
-      }
-      else if(Trader.isTradingOpportunity(lastPredictedBackprice, lastObservedLayprice, targetTicks)){
-        //it's a lay to back opportunity
-        console.log("Lay to back Opportunity")
-        console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
-
-      }
-      else {
-        console.log("No trade")
-      }
+              }
+              else if(Trader.isTradingOpportunity(lastPredictedBackprice, lastObservedLayprice, targetTicks)){
+                //it's a lay to back opportunity
+                console.log(i + "Lay to back Opportunity")
+                console.log(lastObservedLayprice + " " + lastObservedBackPrice, + " " + lastPredictedLayprice + " " + lastPredictedBackprice)
+                console.log(is)
+                console.log(os)
+                console.log(rs)
+                console.log(rsLay)
+                console.log(rsBack)
+                console.log(predictions)
+                const returns = Trader.simulateLayToBack(lastObservedLayprice, 1.0, rsBack, targetTicks, stopLossTicks)
+                console.log("Returns: " + JSON.stringify(returns))
+                layToBackBets++
+                layToBackReturns += returns.returns
+                console.log("layToBackReturns: " + layToBackReturns + "(" + layToBackBets + ")")
+                //process.exit(1)
+              }
+              else {
+                //console.log("No trade")
+              }
+            }
+        }
     }
+    console.log("layToBackReturns: " + layToBackReturns + "(" + layToBackBets + ")")
+    console.log("backToLayReturns: " + backToLayReturns + "(" + backToLayBets + ")")
     
 
   }

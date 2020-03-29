@@ -1,14 +1,17 @@
 import keras
 from model import SeqToSeqModel
-from generators import BFGenerator
+
+#replace with import of appropriate generator
+from generators import WOMGenerator
 import json
 
 with open('./config/config.json') as json_file:
     config = json.load(json_file)
 
 
+#replace BFGenerator with appropriate data generator
 
-config["train_data_generator"] = BFGenerator(datafile_path=config["datafile_path"],
+config["train_data_generator"] = WOMGenerator(datafile_path=config["datafile_path"],
                                               source_sequence_length=config["source_sequence_length"],
                                               offset=config["offset"],
                                               input_sequence_length=config["input_sequence_length"],
@@ -32,8 +35,8 @@ model.build()
 print(model.model.summary())
 
 generator=config["train_data_generator"]
-print(BFGenerator.n_sequences)
-print(BFGenerator.within_sequence_iterations)
+print(WOMGenerator.n_sequences)
+print(WOMGenerator.within_sequence_iterations)
 x_data, y_data=next(generator)
 
 

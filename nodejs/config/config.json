@@ -3,11 +3,12 @@
 	"offset": 30,
 	"inputSequenceLength": 10,
 	"outputSequenceLength": 5,
-	"inputFilePath":"/home/adrian/Development/kerasseq2seq/data/generate.csv",
+	"inputFilePath":"/Users/adriangordon/Development/kerasseq2seq/data/generate.csv",
 	"inputAttributes":["layprice1","laydepth1","backprice1","backdepth1"],
 	"outputAttributes":["layprice1","backprice1"],
   "outputIndexes":[0,2],
   "inferenceServiceUri":"http://localhost:3002/predict",
-  "targetTicks":10,
-  "stopLossTicks":-10
+  "targetTicks":5,
+  "stopLossTicks":-5,
+  "maxPrice": 20.0
 }
