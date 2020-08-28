@@ -56,7 +56,7 @@ def plot_price_prediction(x, y_true, y_pred):
     label1 = "observed layprice"
     plt.plot(range(len(pastLayprice)), pastLayprice, "--b",label=label1)
     
-    pastBackprice = x[:,2]
+    pastBackprice = x[:,1]
     label1 = "observed backprice"
     plt.plot(range(len(pastBackprice)), pastBackprice, "--g",label=label1)
 

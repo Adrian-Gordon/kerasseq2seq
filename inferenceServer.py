@@ -4,7 +4,7 @@ import numpy as np
 
 import keras
 from model import SeqToSeqModel
-from generators import BFGenerator
+from generators import BFWOMGenerator
 
 with open('./config/config.json') as json_file:
     config = json.load(json_file)
@@ -35,10 +35,10 @@ class InferenceServerHandler(BaseHTTPRequestHandler):
     print(self.data_string)
 
     self.data = np.array(json.loads(self.data_string))
-    prediction_input_data, decoder_input_data = BFGenerator.prepare_prediction_data(self.data, config['target_sequence_length'])
+    prediction_input_data, decoder_input_data = BFWOMGenerator.prepare_prediction_data(self.data, config['target_sequence_length'])
     predicted_y=model.predict(prediction_input_data, decoder_input_data)
     print(predicted_y)
-    post_processed_predictions = BFGenerator.process_prediction(self.data,config['output_data_indexes'], predicted_y[0])
+    post_processed_predictions = BFWOMGenerator.process_prediction(self.data,np.array(config['output_data_indexes']), predicted_y[0])
     print(post_processed_predictions)
     self.wfile.write(json.dumps(post_processed_predictions.tolist()).encode("utf-8"))
     #self.wfile.write(json.dumps(model.model.summary()).encode("utf-8"))
